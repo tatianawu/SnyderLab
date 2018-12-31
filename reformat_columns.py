@@ -6,6 +6,11 @@ bugs.set_index('SampleID', inplace=True)
 ids = pd.read_excel('fiber_IDs.xlsx', header=0, convert_float=True)
 ids.set_index('Subject ID', inplace=True)
 
+'''Parse column names into the proper format.
+
+Iterates through the columns in bugs and stores the correctly formatted names in a
+dictionary. Flats duplicate column names with '(1), (2), etc.'
+'''
 def rename_cols():
 	columns = {}
 	names = set()
@@ -35,6 +40,10 @@ def rename_cols():
 	bugs.to_excel(writer)
 	writer.save()
 
+'''Get the correct fiber series for each column.
+
+Searches ids for the sample ID and the number of the fiber treatment (1-4).
+'''
 def get_fiber(ID, fiber):
 	ID = int(ID)
 	cols = ['Fiber used', 'Fiber used2', 'Fiber used3', 'Fiber used4']
@@ -42,6 +51,10 @@ def get_fiber(ID, fiber):
 		if ids.loc[ID, col] == fiber:
 			return idx + 1
 
+'''Get the fiber name for each column.
+
+Matches fibers with keywords in the parsed column names.
+'''
 def get_fiber_name(col):
 	if 'Arabinoxylan' in col:
 		return 'arabinoxylan'
@@ -55,6 +68,10 @@ def get_fiber_name(col):
 		print(col)
 		sys.exit('Fiber not found')
 
+'''Get the time series for each column.
+
+Matches each time series to its corresponding identifier in the reformatted column.
+'''
 def get_time_series(col):
 	if 'Baseline' in col:
 		return 1
@@ -72,6 +89,10 @@ def get_time_series(col):
 		print(col)
 		sys.exit('Time series not found')
 
+'''Get the proper prefix for each column.
+
+Prefixes 69 for each column except in special cases where 70 is used.
+'''
 def get_prefix(ID):
 	seventy = ['1005', '1008', '1010', '1015']
 	if ID in seventy: return '70'
