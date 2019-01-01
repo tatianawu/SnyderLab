@@ -9,7 +9,8 @@ ids.set_index('Subject ID', inplace=True)
 '''Parse column names into the proper format.
 
 Iterates through the columns in bugs and stores the correctly formatted names in a
-dictionary. Flats duplicate column names with '(1), (2), etc.'
+dictionary. Flags duplicate column names with '(1), (2), etc.' Renames the columns
+and saves the new data frame to an Excel spreadsheet.
 '''
 def rename_cols():
     columns = {}
@@ -53,7 +54,11 @@ def get_fiber(ID, fiber):
 
 '''Get the fiber name for each column.
 
-Matches fibers with keywords in the parsed column names.
+Matches fibers with keywords in the parsed column names. Fiber treatment must be:
+    - Arabinoxylan
+    - SC Inulin
+    - LC Inulin
+    - Mix
 '''
 def get_fiber_name(col):
     if 'Arabinoxylan' in col:
@@ -71,6 +76,13 @@ def get_fiber_name(col):
 '''Get the time series for each column.
 
 Matches each time series to its corresponding identifier in the reformatted column.
+Time series must be:
+    - Baseline
+    - 10
+    - 20
+    - 30
+    - Washout D3
+    - Washout D10
 '''
 def get_time_series(col):
     if 'Baseline' in col:
