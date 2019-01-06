@@ -1,4 +1,8 @@
 .DS_Store
+.Rhistory
+
+# Supporting documents and data files
+helper/
 *.xlsx
 *.txt
 *.csv
